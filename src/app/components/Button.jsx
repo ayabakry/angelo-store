@@ -6,6 +6,7 @@ export default function Button({
   onClick,
   variant = "primary",
   className,
+  type = "button",
   ...props
 }) {
   const baseStyles =
@@ -22,6 +23,7 @@ export default function Button({
 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={clsx(baseStyles, variants[variant], className)}
       {...props}
