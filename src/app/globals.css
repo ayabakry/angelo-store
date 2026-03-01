@@ -153,15 +153,15 @@ body {
 
 /* Animation Utility Classes */
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 2s ease-in-out infinite;
 }
 
 .animate-breathe {
-  animation: breathe 3s ease-in-out infinite;
+  animation: breathe 1.5s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+  animation: pulse-glow 1s ease-in-out infinite;
 }
 
 .animate-fade-in-up {
@@ -169,7 +169,7 @@ body {
 }
 
 .animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
+  animation: fade-in 0.8s ease-out forwards;
 }
 
 .animate-slide-left {
