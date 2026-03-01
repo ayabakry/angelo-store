@@ -1,58 +1,111 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "./Button";
 
 const Header = () => {
-const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollToSection = (sectionId) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth" });
-  }
-  setIsMenuOpen(false);
-};
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-dark-bg/90 backdrop-blur-sm border-b border-white/10">
+    <header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-dark-bg/95 backdrop-blur-md shadow-lg py-2" 
+          : "bg-dark-bg/90 backdrop-blur-sm py-4"
+      }`}
+    >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center font-bold text-white text-2xl font-almarai">
-           <Button variant="link" onClick={() => scrollToSection("home")}> Ange<span className="text-brand-red">L</span>o </Button>
+        <div className="flex justify-between items-center">
+          <div 
+            className="flex items-center font-bold text-brand-blue text-2xl font-almarai cursor-pointer"
+            onClick={() => scrollToSection("home")}
+          >
+            <span>Ange</span>
+            <span className="text-brand-red">L</span>
+            <span>o</span>
           </div>
 
-          <div className="hidden md:flex space-x-8">
-            {["home", "products", "about", "contact"].map((section) => (
-             <Button variant="nav" onClick={() => scrollToSection(section)}>
-  {section}
-</Button>
+          <div className="hidden md:flex space-x-6">
+            {[
+              { id: "home", label: "Home" },
+              { id: "products", label: "Products" },
+              { id: "about", label: "About" },
+              { id: "contact", label: "Contact" }
+            ].map((section, index) => (
+              <Button 
+                key={section.id}
+                variant="nav" 
+                onClick={() => scrollToSection(section.id)}
+                className="relative overflow-hidden group"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <span className="relative z-10">{section.label}</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full"></span>
+              </Button>
             ))}
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="md:hidden">
-           <Button variant="icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    {isMenuOpen ? (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    ) : (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-    )}
-  </svg>
-</Button>
+            <Button 
+              variant="icon" 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="relative"
+            >
+              <div className="w-6 h-6 relative">
+                <span className={`absolute left-0 w-full h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'top-3 rotate-45' : 'top-1'}`}></span>
+                <span className={`absolute left-0 top-3 w-full h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+                <span className={`absolute left-0 w-full h-0.5 bg-white transition-all duration-300 ${isMenuOpen ? 'top-3 -rotate-45' : 'top-5'}`}></span>
+              </div>
+            </Button>
           </div>
         </div>
 
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-dark-bg/95 border-t border-white/10">
-              {["home", "products", "about", "contact"].map((section) => (
-               <Button variant="menu" onClick={() => scrollToSection(section)}>
-  {section}
-</Button>
-              ))}
-            </div>
+        {/* Mobile Menu */}
+        <div 
+          className={`md:hidden overflow-hidden transition-all duration-300 ${
+            isMenuOpen ? 'max-h-64 opacity-100 mt-4' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-dark-bg/95 border-t border-white/10 rounded-lg">
+            {[
+              { id: "home", label: "Home" },
+              { id: "products", label: "Products" },
+              { id: "about", label: "About" },
+              { id: "contact", label: "Contact" }
+            ].map((section) => (
+              <Button 
+                key={section.id}
+                variant="menu" 
+                onClick={() => scrollToSection(section.id)}
+              >
+                {section.label}
+              </Button>
+            ))}
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

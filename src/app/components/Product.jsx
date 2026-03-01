@@ -10,24 +10,46 @@ const Product = ({ product, onClick }) => {
 
   return (
     <div
-      className="bg-white/5 p-6 rounded-lg text-center shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+      className="product-card bg-white/5 p-4 rounded-lg text-center cursor-pointer relative"
       onClick={() => onClick(product)}
     >
-      <div className="relative w-full h-48 mb-4">
+      {/* Badge */}
+      {product.badge && (
+        <div className={`badge badge-${product.badge}`}>
+          {product.badge === "new" ? "New" : "Sale"}
+        </div>
+      )}
+
+      {/* Image Container with Zoom Effect */}
+      <div className="product-image-container relative w-full h-48 mb-4 rounded-lg overflow-hidden bg-white/5">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain rounded-md"
+          className="object-contain p-4"
         />
+        
+        {/* Quick View Overlay */}
+        <div className="product-overlay rounded-lg">
+          <button className="bg-white text-dark-bg px-4 py-2 rounded-lg font-semibold text-sm transform hover:scale-110 transition-transform">
+            Quick View
+          </button>
+        </div>
       </div>
 
-      <h3 className="text-xl font-semibold text-white mb-2 font-almarai">
+      <h3 className="text-lg font-semibold text-white mb-2 font-almarai">
         {product.name}
       </h3>
 
-      <div className="text-xl font-bold text-blue-600 mb-4 font-almarai">
-        {product.price} EGP
+      <div className="flex items-center justify-center gap-2 mb-3">
+        {product.originalPrice && (
+          <span className="text-sm text-white/50 line-through">
+            {product.originalPrice} EGP
+          </span>
+        )}
+        <div className="text-xl font-bold text-blue-600 font-almarai">
+          {product.price} EGP
+        </div>
       </div>
 
       <a
@@ -35,7 +57,7 @@ const Product = ({ product, onClick }) => {
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="inline-block bg-brand-blue text-white font-semibold font-almarai py-2 px-4 rounded-lg transition-colors duration-300"
+        className="inline-block bg-brand-blue hover:bg-brand-red text-white font-semibold font-almarai py-2 px-4 rounded-lg transition-all duration-300 w-full"
       >
         Buy on WhatsApp
       </a>
