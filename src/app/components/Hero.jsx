@@ -43,14 +43,12 @@ const Hero = () => {
       id="home"
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
     >
-      {/* Floating Background Circles */}
       <div className="floating-circle floating-circle-1"></div>
       <div className="floating-circle floating-circle-2"></div>
       <div className="floating-circle floating-circle-3"></div>
 
       <div className="text-center relative z-10">
         <div className="mb-8">
-          {/* Animated Logo Container */}
           <div className="mb-8 relative">
             <div className="w-28 h-28 border-2 border-white/30 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
               <Image
@@ -64,12 +62,10 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Animated Title */}
           <h1 className="text-5xl md:text-7xl font-bold mb-4 text-brand-blue font-almarai animate-fade-in-up">
             Ange<span className="text-brand-red">L</span>o
           </h1>
 
-          {/* Typing Animation */}
           <div className="text-2xl md:text-4xl text-brand-red font-semibold mb-2 font-almarai h-10 flex items-center justify-center">
             <span className="animate-fade-in">{typedText}</span>
             <span className={`border-r-4 border-brand-red ml-1 ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>
@@ -84,7 +80,6 @@ const Hero = () => {
           Made for everyday wear
         </p>
 
-        {/* Enhanced CTA Button */}
         <div className="mt-12 animate-fade-in-up delay-400">
           <button
             onClick={scrollToProducts}

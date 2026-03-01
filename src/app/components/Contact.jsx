@@ -92,30 +92,11 @@ const ContactUs = () => {
               <i className="fab fa-instagram text-xl group-hover:text-white"></i>
             </a>
 
-            <a
-              href="https://wa.me/201020881988"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-14 h-14 border-2 border-white/30 rounded-full flex items-center justify-center hover:bg-green-500 hover:border-green-500 transition-all duration-300 transform hover:scale-110 group"
-            >
-              <i className="fab fa-whatsapp text-xl group-hover:text-white"></i>
-            </a>
+           
           </div>
         </div>
 
-        {/* Quick Contact Form */}
-        <div className={`mt-16 max-w-md mx-auto transition-all duration-700 delay-400 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <p className="text-white/70 mb-4">Or send us a message directly:</p>
-          <a
-            href="https://wa.me/201020881988?text=Hello,%20I%20want%20to%20know%20more%20about%20your%20products"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-brand-blue hover:bg-brand-red text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
-          >
-            <i className="fab fa-whatsapp"></i>
-            Send Message
-          </a>
-        </div>
+       
       </div>
     </section>
   );
