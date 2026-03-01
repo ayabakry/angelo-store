@@ -47,57 +47,20 @@ const Footer = () => {
         <div className="mb-4">
           <button 
             onClick={scrollToTop}
-            className="text-2xl font-bold font-almarai text-white hover:text-brand-red transition-colors"
+            className="text-2xl font-bold font-almarai text-brand-blue hover:text-brand-red transition-colors"
           >
             Ange<span className="text-brand-red">L</span>o
           </button>
         </div>
 
-        {/* Quick Links */}
-        <div className="flex justify-center gap-6 mb-6">
-          <a href="#home" className="text-white/60 hover:text-white text-sm transition-colors">Home</a>
-          <a href="#products" className="text-white/60 hover:text-white text-sm transition-colors">Products</a>
-          <a href="#about" className="text-white/60 hover:text-white text-sm transition-colors">About</a>
-          <a href="#contact" className="text-white/60 hover:text-white text-sm transition-colors">Contact</a>
-        </div>
+       
+       
 
-        {/* Social Links */}
-        <div className="flex justify-center space-x-4 mb-6">
-          <a
-            href="https://web.facebook.com/profile.php?id=61585532554944"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-all duration-300"
-          >
-            <i className="fab fa-facebook-f text-white/70 hover:text-white"></i>
-          </a>
-          <a
-            href="https://www.instagram.com/angelowearofficial"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 hover:border-transparent transition-all duration-300"
-          >
-            <i className="fab fa-instagram text-white/70 hover:text-white"></i>
-          </a>
-          <a
-            href="https://wa.me/201020881988"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-green-500 hover:border-green-500 transition-all duration-300"
-          >
-            <i className="fab fa-whatsapp text-white/70 hover:text-white"></i>
-          </a>
-        </div>
-
-        {/* Copyright */}
         <p className="text-sm text-white/50 uppercase tracking-wider">
           © {year} Angelo Store. All rights reserved.
         </p>
         
-        {/* Made with love */}
-        <p className="text-xs text-white/30 mt-2">
-          Made with <span className="text-brand-red">❤</span> for gamers
-        </p>
+        
       </div>
     </footer>
   );
