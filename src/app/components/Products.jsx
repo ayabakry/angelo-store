@@ -15,63 +15,77 @@ const Products = () => {
     {
       id: 1,
       name: "AngeLo Hoodie",
-      description: "Premium hoodie with gaming-inspired design - featuring unique graphics and comfortable fit",
+      description:
+        "Premium hoodie with gaming-inspired design - featuring unique graphics and comfortable fit",
       price: "300",
       originalPrice: "350",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "Hoodies",
       badge: "sale",
     },
     {
       id: 2,
       name: "AngeLo T-Shirt",
-      description: "Comfortable cotton t-shirt with unique graphics - perfect for everyday wear",
+      description:
+        "Comfortable cotton t-shirt with unique graphics - perfect for everyday wear",
       price: "150",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "T-Shirts",
       badge: "new",
     },
     {
       id: 3,
       name: "AngeLo Cap",
-      description: "Stylish cap for everyday wear - adjustable fit with premium quality",
+      description:
+        "Stylish cap for everyday wear - adjustable fit with premium quality",
       price: "100",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "Caps",
     },
     {
       id: 4,
       name: "AngeLo Jacket",
-      description: "Lightweight jacket perfect for any season - water-resistant material",
+      description:
+        "Lightweight jacket perfect for any season - water-resistant material",
       price: "400",
       originalPrice: "500",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "Jackets",
       badge: "sale",
     },
     {
       id: 5,
       name: "AngeLo Hoodie Pro",
-      description: "Premium hoodie with gaming-inspired design - featuring unique graphics and comfortable fit",
+      description:
+        "Premium hoodie with gaming-inspired design - featuring unique graphics and comfortable fit",
       price: "350",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "Hoodies",
       badge: "new",
     },
     {
       id: 6,
       name: "AngeLo Graphic Tee",
-      description: "Comfortable cotton t-shirt with unique graphics - perfect for everyday wear",
+      description:
+        "Comfortable cotton t-shirt with unique graphics - perfect for everyday wear",
       price: "180",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "T-Shirts",
     },
     {
       id: 7,
       name: "AngeLo Snapback",
-      description: "Stylish snapback cap for everyday wear - premium quality material",
+      description:
+        "Stylish snapback cap for everyday wear - premium quality material",
       price: "120",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "Caps",
       badge: "new",
     },
@@ -81,6 +95,7 @@ const Products = () => {
       description: "Heavy duty winter jacket - perfect for cold weather",
       price: "600",
       image: hoodieImage1,
+      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
       category: "Jackets",
     },
   ];
@@ -103,19 +118,20 @@ const Products = () => {
     }, 300);
   };
 
-  const filteredProducts = activeCategory === "All" 
-    ? products 
-    : products.filter(product => product.category === activeCategory);
+  const filteredProducts =
+    activeCategory === "All"
+      ? products
+      : products.filter((product) => product.category === activeCategory);
 
   return (
     <section id="products" className="py-16 px-4 relative">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-transparent to-dark-bg/50"></div>
-      
+
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center font-almarai text-white mb-4 uppercase tracking-wider animate-fade-in-up">
           Our Products
         </h2>
-        
+
         <div className="w-24 h-1 bg-gradient-to-r from-brand-blue via-brand-red to-brand-blue mx-auto mb-8 animate-pulse"></div>
 
         <div className="flex flex-wrap justify-center gap-3 mb-12">
@@ -134,32 +150,30 @@ const Products = () => {
           ))}
         </div>
 
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 transition-opacity duration-300 ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 transition-opacity duration-300 ${isLoading ? "opacity-50" : "opacity-100"}`}
+        >
           {filteredProducts.map((product, index) => (
             <div
               key={product.id}
               className="animate-fade-in-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <Product
-                product={product}
-                onClick={handleProductClick}
-              />
+              <Product product={product} onClick={handleProductClick} />
             </div>
           ))}
         </div>
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-xl text-white/50">No products found in this category</p>
+            <p className="text-xl text-white/50">
+              No products found in this category
+            </p>
           </div>
         )}
 
         {selectedProduct && (
-          <ProductDetailsModal
-            product={selectedProduct}
-            onClose={closeModal}
-          />
+          <ProductDetailsModal product={selectedProduct} onClose={closeModal} />
         )}
       </div>
     </section>
