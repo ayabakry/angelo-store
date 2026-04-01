@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Poppins,Almarai } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "./context/ThemeContext";
+// import { ThemeProvider } from "./context/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

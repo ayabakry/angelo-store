@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div 
-className={`min-h-screen bg-background text-foreground transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+      className={`min-h-screen bg-dark-bg text-white transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
     >
       <Header />
 
