@@ -43,7 +43,7 @@ const Product = ({ product, onClick }) => {
 
       <div className="flex items-center justify-center gap-2 mb-3">
         {product.originalPrice && (
-          <span className="text-sm text-white/50 line-through">
+          <span className="text-sm text-brand-red line-through">
             {product.originalPrice} EGP
           </span>
         )}

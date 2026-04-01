@@ -1,4 +1,4 @@
-// components/Button.js
+// components/Button.jsx
 import clsx from "clsx";
 
 export default function Button({
@@ -19,6 +19,7 @@ export default function Button({
     nav: "text-white uppercase text-sm tracking-wider hover:text-brand-red relative",
     menu: "block w-full text-left px-3 py-2 text-white hover:text-brand-red uppercase text-sm tracking-wider hover:bg-white/5 rounded-lg transition-all",
     icon: "text-white hover:text-brand-red",
+    "theme-toggle": "p-2 rounded-full bg-white/10 hover:bg-white/20 text-white hover:text-brand-blue transition-all w-10 h-10 flex items-center justify-center shadow-lg hover:shadow-xl",
   };
 
   return (

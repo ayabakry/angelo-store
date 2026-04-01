@@ -6,6 +6,27 @@ import ProductDetailsModal from "./ProductDetailsModal";
 
 import hoodieImage1 from "../Imgs/Hoodies/Hoodie1.png";
 
+// Boys T-Shirts
+import gym1TransBlack from "../Imgs/Boys/TShirts/Gym Designs/T-Shirts Designs/Gym1Trans - TBlack.png";
+import zed1Gray from "../Imgs/Boys/TShirts/League of Legends Designs/T-Shirts Designs/Boys/Zed1 - TGray.png";
+
+import sungJinWoo1Black from "../Imgs/Boys/TShirts/Solo Leveling Designs/T-Shirts Designs/Boys/Sung JinWoo1 (Black) - TBlack.png";
+import sungJinWoo1Gray from "../Imgs/Boys/TShirts/Solo Leveling Designs/T-Shirts Designs/Boys/Sung JinWoo1 (Black) - TGray.png";
+import sungJinWoo1White from "../Imgs/Boys/TShirts/Solo Leveling Designs/T-Shirts Designs/Boys/Sung JinWoo1 (Black) - TWhite.png";
+
+import sungJinWoo2Black from "../Imgs/Boys/TShirts/Solo Leveling Designs/T-Shirts Designs/Boys/Sung JinWoo2 - TBlack.png";
+import sungJinWoo2White from "../Imgs/Boys/TShirts/Solo Leveling Designs/T-Shirts Designs/Boys/Sung JinWoo2 - TWhite.png";
+
+// Girls T-Shirts
+import nezukoPink from "../Imgs/Girls/TShirts/Demon Slayer Designs/T-Shirts Designs/Girls/Nezuko Pink.png";
+import tanjiroNezuko from "../Imgs/Girls/TShirts/Demon Slayer Designs/T-Shirts Designs/Girls/Tanjiro and Nezuko.png";
+
+import furina1Black from "../Imgs/Girls/TShirts/Genshin Impact Designs/T-Shirts Designs/Girls/Furina1 - TBlack.png";
+import furina1Gray from "../Imgs/Girls/TShirts/Genshin Impact Designs/T-Shirts Designs/Girls/Furina1 - TGray.png";
+import furina1White from "../Imgs/Girls/TShirts/Genshin Impact Designs/T-Shirts Designs/Girls/Furina1 - TWhite.png";
+
+import ahri1Black from "../Imgs/Girls/TShirts/League of Legends Designs/T-Shirts Designs/Girls/Ahri1 - TBlack.png";
+
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -14,14 +35,14 @@ const Products = () => {
   const products = [
     {
       id: 1,
-      name: "AngeLo Hoodie",
+      name: "Gym1Trans - TBlack",
       description:
         "Premium hoodie with gaming-inspired design - featuring unique graphics and comfortable fit",
       price: "300",
       originalPrice: "350",
-      image: hoodieImage1,
-      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
-      category: "Hoodies",
+      image: gym1TransBlack,
+      imageGallery: [gym1TransBlack, zed1Gray, furina1White, furina1Gray],
+      category: "T-Shirts",
       badge: "sale",
     },
     {

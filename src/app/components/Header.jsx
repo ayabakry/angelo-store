@@ -2,8 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import Button from "./Button";
+// import { useTheme } from "../context/ThemeContext";
 
 const Header = () => {
+  // const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -28,13 +30,11 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  // const toggleIcon = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-dark-bg/95 backdrop-blur-md shadow-lg py-2" 
-          : "bg-dark-bg/90 backdrop-blur-sm py-4"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 dark:bg-dark-bg/95 bg-gray-900/95 backdrop-blur-md shadow-lg py-2 ${isScrolled ? '' : 'py-4'}`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -47,8 +47,8 @@ const Header = () => {
             <span>o</span>
           </div>
 
-          <div className="hidden md:flex space-x-6">
-            {[
+          <div className="hidden md:flex items-center space-x-6">
+            {[ 
               { id: "home", label: "Home" },
               { id: "products", label: "Products" },
               { id: "about", label: "About" },
@@ -65,10 +65,25 @@ const Header = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full"></span>
               </Button>
             ))}
+            {/* <Button 
+              variant="theme-toggle" 
+              onClick={toggleTheme}
+              className="ml-4"
+              title="Toggle theme"
+            >
+              <i className={`${toggleIcon} transition-transform duration-300  ></i>
+            </Button> */}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-4">
+            {/* <Button 
+              variant="theme-toggle" 
+              onClick={toggleTheme}
+              title="Toggle theme"
+            >
+              <i className={`${toggleIcon} transition-transform duration-300  ></i>
+            </Button> */}
             <Button 
               variant="icon" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -89,7 +104,7 @@ const Header = () => {
             isMenuOpen ? 'max-h-64 opacity-100 mt-4' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-dark-bg/95 border-t border-white/10 rounded-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-dark-bg/95 dark:bg-dark-bg/95 bg-gray-900/95 border-t border-white/10 rounded-lg">
             {[
               { id: "home", label: "Home" },
               { id: "products", label: "Products" },
@@ -104,6 +119,13 @@ const Header = () => {
                 {section.label}
               </Button>
             ))}
+            {/* <Button 
+              variant="theme-toggle"
+              onClick={toggleTheme}
+              className="mt-2"
+            >
+              <i className={`${toggleIcon} transition-transform duration-300  ></i>
+            </Button> */}
           </div>
         </div>
       </nav>

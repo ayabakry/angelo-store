@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Poppins,Almarai } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+<html lang="en" className="dark" suppressHydrationWarning>
        <head>
         <link
           rel="stylesheet"
@@ -40,7 +41,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${almarai.variable} font-sans antialiased`}
       >
-        {children}
+        {/* <ThemeProvider> */}
+          {children}
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

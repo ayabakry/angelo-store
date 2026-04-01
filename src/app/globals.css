@@ -2,13 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-
 body {
   margin: 0;
-  background-color: #1b1f22;
-  color: #ffffff;
+  background-color: #f9fafb;
+  color: #111827;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background-color: #1b1f22;
+  color: #ffffff;
 }
 
 /* Custom Animations */
@@ -463,6 +467,3 @@ body {
 .delay-400 { animation-delay: 400ms; }
 .delay-500 { animation-delay: 500ms; }
 .delay-600 { animation-delay: 600ms; }
-
-
-
