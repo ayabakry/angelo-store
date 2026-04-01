@@ -5,6 +5,7 @@ import Product from "./Product";
 import ProductDetailsModal from "./ProductDetailsModal";
 
 import hoodieImage1 from "../Imgs/Hoodies/Hoodie1.png";
+import tanjiroAndNezuko from "../Imgs/Boys/TShirts/Demon Slayer Designs/T-Shirts Designs/Tanjiro and Nezuko.png";
 
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -19,9 +20,9 @@ const Products = () => {
         "Premium hoodie with gaming-inspired design - featuring unique graphics and comfortable fit",
       price: "300",
       originalPrice: "350",
-      image: hoodieImage1,
-      imageGallery: [hoodieImage1, hoodieImage1, hoodieImage1, hoodieImage1],
-      category: "Hoodies",
+      image: tanjiroAndNezuko,
+      imageGallery: [tanjiroAndNezuko, tanjiroAndNezuko, tanjiroAndNezuko, tanjiroAndNezuko],
+      category: "T-Shirts",
       badge: "sale",
     },
     {
@@ -139,11 +140,10 @@ const Products = () => {
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
-              className={`category-btn px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 ${
-                activeCategory === category
-                  ? "active bg-brand-red text-white"
-                  : "bg-white/10 text-white hover:bg-white/20"
-              }`}
+              className={`category-btn px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 ${activeCategory === category
+                ? "active bg-brand-red text-white"
+                : "bg-white/10 text-white hover:bg-white/20"
+                }`}
             >
               {category}
             </button>
