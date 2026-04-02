@@ -177,7 +177,7 @@ const ProductDetailsModal = ({ product, onClose }) => {
                 href={`https://wa.me/201020881988?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-brand-blue hover:bg-brand-red text-white font-semibold py-3 px-6 rounded-xl transition"
+                className="flex items-center justify-center gap-2 bg-brand-blue hover:bg-whatsapp-green text-white font-semibold py-3 px-6 rounded-xl transition"
               >
                 Order via WhatsApp
               </a>

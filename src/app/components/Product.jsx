@@ -5,7 +5,7 @@ import React from "react";
 
 const Product = ({ product, onClick }) => {
   const whatsappMessage = encodeURIComponent(
-    `I'm interested in ${product.name}`
+    `I'm interested in ${product.name}`,
   );
 
   return (
@@ -28,7 +28,7 @@ const Product = ({ product, onClick }) => {
           fill
           className="object-contain p-4"
         />
-        
+
         {/* Quick View Overlay */}
         <div className="product-overlay rounded-lg">
           <button className="bg-white text-dark-bg px-4 py-2 rounded-lg font-semibold text-sm transform hover:scale-110 transition-transform">
@@ -57,7 +57,7 @@ const Product = ({ product, onClick }) => {
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="inline-block bg-brand-blue hover:bg-brand-red text-white font-semibold font-almarai py-2 px-4 rounded-lg transition-all duration-300 w-full"
+        className="inline-block bg-brand-blue hover:bg-whatsapp-green text-white font-semibold font-almarai py-2 px-4 rounded-lg transition-all duration-300 w-full"
       >
         Buy on WhatsApp
       </a>

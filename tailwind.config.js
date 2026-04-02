@@ -11,6 +11,7 @@ module.exports = {
         'brand-blue': '#00527f',
         'brand-red': '#a11d21',
         'dark-bg': '#1b1f22',
+        'whatsapp-green': '#25D366',
       },
       fontFamily: {
         sans: ['var(--font-poppins)', 'sans-serif'],
