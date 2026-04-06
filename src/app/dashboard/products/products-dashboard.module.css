@@ -1,0 +1,293 @@
+.wrapper {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f9fafb;
+  color: #111827;
+}
+
+.topBar {
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #00527f;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.subtitle {
+  margin: 0;
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 700px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.formCard,
+.listCard {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(0, 82, 127, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 82, 127, 0.08);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cardHeader h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #111827;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.field input,
+.field textarea,
+.searchInput {
+  width: 100%;
+  border: 1px solid #dbe4ea;
+  border-radius: 14px;
+  padding: 13px 14px;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+  color: #111827;
+  transition: 0.25s ease;
+}
+
+.field input:focus,
+.field textarea:focus,
+.searchInput:focus {
+  border-color: #00527f;
+  box-shadow: 0 0 0 4px rgba(0, 82, 127, 0.08);
+}
+
+.mainButton,
+.secondaryButton,
+.editButton,
+.deleteButton {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.25s ease;
+}
+
+.mainButton {
+  background: linear-gradient(135deg, #00527f 0%, #0b6a9e 100%);
+  color: #fff;
+  box-shadow: 0 12px 24px rgba(0, 82, 127, 0.2);
+}
+
+.mainButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(0, 82, 127, 0.25);
+}
+
+.secondaryButton {
+  background: rgba(0, 82, 127, 0.08);
+  color: #00527f;
+}
+
+.secondaryButton:hover {
+  background: rgba(0, 82, 127, 0.12);
+}
+
+.searchInput {
+  max-width: 280px;
+}
+
+.productsGrid {
+  display: grid;
+  gap: 18px;
+}
+
+.productCard {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 18px;
+  border: 1px solid rgba(0, 82, 127, 0.1);
+  border-radius: 22px;
+  padding: 16px;
+  background: #fff;
+  transition: 0.3s ease;
+  box-shadow: 0 10px 24px rgba(0, 82, 127, 0.06);
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 82, 127, 0.12);
+}
+
+.imageBox {
+  width: 140px;
+  height: 140px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(0, 82, 127, 0.06), rgba(161, 29, 33, 0.06));
+  border: 1px solid rgba(0, 82, 127, 0.08);
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.noImage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #6b7280;
+  font-size: 13px;
+  text-align: center;
+  padding: 10px;
+}
+
+.productContent {
+  display: grid;
+  gap: 10px;
+}
+
+.productHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+}
+
+.productHead h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #111827;
+}
+
+.price {
+  background: #a11d21;
+  color: #fff;
+  border-radius: 999px;
+  padding: 7px 13px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.description {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+.pathText {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.editButton {
+  background: #00527f;
+  color: #fff;
+}
+
+.editButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 82, 127, 0.2);
+}
+
+.deleteButton {
+  background: #a11d21;
+  color: #fff;
+}
+
+.deleteButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(161, 29, 33, 0.2);
+}
+
+.emptyText {
+  color: #6b7280;
+  margin: 16px 0 0;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .formCard,
+  .listCard {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 18px;
+  }
+
+  .productCard {
+    grid-template-columns: 1fr;
+  }
+
+  .imageBox {
+    width: 100%;
+    height: 220px;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .searchInput {
+    max-width: 100%;
+  }
+}
