@@ -1,35 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Angelologo from "@/app/Imgs/angeloLogo.png"
+import useTypingEffect from "@/app/hooks/useTypingEffect.js";
 
 const Hero = () => {
-  const [typedText, setTypedText] = useState("");
   const fullText = "Level up your style";
-  const [showCursor, setShowCursor] = useState(true);
-
-  useEffect(() => {
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index <= fullText.length) {
-        setTypedText(fullText.slice(0, index));
-        index++;
-      } else {
-        clearInterval(timer);
-      }
-    }, 100);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const cursorTimer = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 530);
-
-    return () => clearInterval(cursorTimer);
-  }, []);
+  const { typedText, showCursor } = useTypingEffect(fullText);
 
   const scrollToProducts = () => {
     const element = document.getElementById("products");

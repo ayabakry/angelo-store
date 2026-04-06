@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 
-const Product = ({ product, onClick }) => {
-  const whatsappMessage = encodeURIComponent(
-    `I'm interested in ${product.name}`,
+const Product = React.memo(({ product, onClick }) => {
+  const whatsappMessage = useMemo(
+    () => encodeURIComponent(`I'm interested in ${product.name}`),
+    [product.name]
   );
 
   return (
@@ -31,7 +32,13 @@ const Product = ({ product, onClick }) => {
 
         {/* Quick View Overlay */}
         <div className="product-overlay rounded-lg">
-          <button className="bg-white text-dark-bg px-4 py-2 rounded-lg font-semibold text-sm transform hover:scale-110 transition-transform">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick(product);
+            }}
+            className="bg-white text-dark-bg px-4 py-2 rounded-lg font-semibold text-sm transform hover:scale-110 transition-transform"
+          >
             Quick View
           </button>
         </div>
@@ -63,6 +70,6 @@ const Product = ({ product, onClick }) => {
       </a>
     </div>
   );
-};
+});
 
 export default Product;

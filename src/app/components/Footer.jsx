@@ -1,32 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import useScrollReveal from "@/app/hooks/useScrollReveal.js";
 
 const Footer = () => {
   const year = new Date().getFullYear();
-  const [isVisible, setIsVisible] = useState(false);
-  const footerRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (footerRef.current) {
-      observer.observe(footerRef.current);
-    }
-
-    return () => {
-      if (footerRef.current) {
-        observer.unobserve(footerRef.current);
-      }
-    };
-  }, []);
+  const [footerRef, isVisible] = useScrollReveal({ threshold: 0.1 });
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });

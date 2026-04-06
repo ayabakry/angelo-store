@@ -1,40 +1,14 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import Product from "./Product";
 import ProductDetailsModal from "./ProductDetailsModal";
+import useFetchProducts from "@/app/hooks/useFetchProducts.js";
 
 const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState([]);
-
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-
-      const res = await fetch("/api/products", {
-        cache: "no-store",
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setProducts(data.data || []);
-      } else {
-        console.error(data.message || "Failed to fetch products");
-      }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const { products, isLoading } = useFetchProducts();
 
   const categories = useMemo(() => {
     const dbCategories = products

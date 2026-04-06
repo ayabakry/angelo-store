@@ -1,26 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "./Button";
-
+import useHeaderScroll from "@/app/hooks/useHeaderScroll.js";
 
 const Header = () => {
-// const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const isScrolled = useHeaderScroll();
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -30,7 +16,7 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-// const toggleIcon = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
 
   return (
     <header 
@@ -65,12 +51,10 @@ const Header = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-red transition-all duration-300 group-hover:w-full"></span>
               </Button>
             ))}
-            {/* <Button               variant="theme-toggle"               onClick={toggleTheme}              className="ml-4"              title="Toggle theme"            >              <i className={`${toggleIcon} transition-transform duration-300`}></i>            </Button> */}
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-4">
-            {/* <Button               variant="theme-toggle"               onClick={toggleTheme}              title="Toggle theme"            >              <i className={`${toggleIcon} transition-transform duration-300`}></i>            </Button> */}
             <Button 
               variant="icon" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -106,7 +90,6 @@ const Header = () => {
                 {section.label}
               </Button>
             ))}
-            {/* <Button               variant="theme-toggle"              onClick={toggleTheme}              className="mt-2"            >              <i className={`${toggleIcon} transition-transform duration-300`}></i>            </Button> */}
           </div>
         </div>
       </nav>

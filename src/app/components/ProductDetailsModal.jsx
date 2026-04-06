@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 
 const ProductDetailsModal = ({ product, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -42,8 +42,11 @@ const ProductDetailsModal = ({ product, onClose }) => {
     setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
-  const whatsappMessage = encodeURIComponent(
-    `I'm interested in ${product.name} - Price: ${product.price} EGP`,
+  const whatsappMessage = React.useMemo(
+    () => encodeURIComponent(
+      `I'm interested in ${product.name} - Price: ${product.price} EGP`
+    ),
+    [product.name, product.price]
   );
 
   return (
@@ -114,7 +117,7 @@ const ProductDetailsModal = ({ product, onClose }) => {
                     }`}
                   >
                     <Image
-                      src={images[selectedImage]}
+                      src={img}
                       alt={product.name}
                       fill
                       className="object-contain rounded-xl"
