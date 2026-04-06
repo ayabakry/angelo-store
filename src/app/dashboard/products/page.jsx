@@ -16,10 +16,10 @@ export default function ProductsDashboardPage() {
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
-const [search, setSearch] = useState("");
-const [imageFile, setImageFile] = useState(null);
-const [imagePreview, setImagePreview] = useState("");
-const fileInputRef = useRef(null);
+  const [search, setSearch] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const fileInputRef = useRef(null);
 
   const isEditing = useMemo(() => !!editingId, [editingId]);
 
