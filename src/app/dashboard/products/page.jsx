@@ -34,7 +34,6 @@ export default function ProductsDashboardPage() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [notification, setNotification] = useState(null);
-  const [notificationTimeout, setNotificationTimeout] = useState(null);
   const fileInputRef = useRef(null);
 
   const { products, pageLoading, refetch } = useDashboardProducts();
@@ -46,9 +45,15 @@ export default function ProductsDashboardPage() {
     return text.includes(search.toLowerCase());
   });
 
+  const showNotification = useCallback((type, message) => {
+    setNotification({ type, message });
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  }, []);
+
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-<<<<<<< HEAD
     dispatch({ type: 'SET_FIELD', field: name, value });
   }, []);
 
@@ -71,53 +76,25 @@ export default function ProductsDashboardPage() {
   }, []);
 
   const handleSubmit = useCallback(async (e) => {
-=======
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-  };
-
-  const handleImageSelect = (e) => {
-    const file = e.target.files?.[0];
-
-    if (!file) {
-      setImageFile(null);
-      setImagePreview("");
-      return;
-    }
-
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-
-  const resetForm = () => {
-    setFormData(initialForm);
-    setEditingId(null);
-    setImageFile(null);
-    setImagePreview("");
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const handleSubmit = async (e) => {
->>>>>>> origin/Nader
     e.preventDefault();
 
-    if (!formState.name.trim()) return setNotification({ type: 'error', message: "Please enter product name" });
-    if (!formState.price) return setNotification({ type: 'error', message: "Please enter product price" });
+    if (!formState.name?.trim()) {
+      showNotification('error', "Please enter product name");
+      return;
+    }
+    if (!formState.price) {
+      showNotification('error', "Please enter product price");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      let imagePath = formData.image || "";
+      let imagePath = formState.image || "";
 
-      if (imageFile) {
+      if (formState.imageFile) {
         const uploadFormData = new FormData();
-        uploadFormData.append("file", imageFile);
+        uploadFormData.append("file", formState.imageFile);
 
         const uploadRes = await fetch("/api/upload", {
           method: "POST",
@@ -127,7 +104,8 @@ export default function ProductsDashboardPage() {
         const uploadData = await uploadRes.json();
 
         if (!uploadData.success) {
-          alert(uploadData.message || "Image upload failed");
+          showNotification('error', uploadData.message || "Image upload failed");
+          setLoading(false);
           return;
         }
 
@@ -145,55 +123,45 @@ export default function ProductsDashboardPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-<<<<<<< HEAD
           name: formState.name.trim(),
           price: Number(formState.price),
-          image: formState.image.trim(),
-          description: formState.description.trim(),
-=======
-          name: formData.name.trim(),
-          price: Number(formData.price),
           image: imagePath,
-          description: formData.description.trim(),
->>>>>>> origin/Nader
+          description: formState.description?.trim() || "",
         }),
       });
 
       const data = await res.json();
 
       if (!data.success) {
-        setNotification({ type: 'error', message: data.message || "Something went wrong" });
+        showNotification('error', data.message || "Something went wrong");
+        setLoading(false);
         return;
       }
 
-      refetch();
+      await refetch();
       resetForm();
-      setNotification({ type: 'success', message: isEditing ? 'Product updated' : 'Product added' });
+      showNotification('success', isEditing ? 'Product updated' : 'Product added');
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error("Submit error:", error);
-        setNotification({ type: 'error', message: "Something went wrong" });
+        showNotification('error', "Something went wrong");
       }
     } finally {
       setLoading(false);
     }
-  }, [formState, isEditing, editingId, refetch, resetForm]);
+  }, [formState, isEditing, editingId, refetch, resetForm, showNotification]);
 
-<<<<<<< HEAD
   const handleEdit = useCallback((product) => {
     setEditingId(product._id);
-    dispatch({ type: 'SET_FORM', payload: {
-=======
-  const handleEdit = (product) => {
-    setEditingId(product._id);
-    setFormData({
->>>>>>> origin/Nader
-      name: product.name || "",
-      price: product.price || "",
-      image: product.image || "",
-      description: product.description || "",
-<<<<<<< HEAD
-    }});
+    dispatch({ 
+      type: 'SET_FORM', 
+      payload: {
+        name: product.name || "",
+        price: product.price || "",
+        image: product.image || "",
+        description: product.description || "",
+      }
+    });
     dispatch({ type: 'CLEAR_IMAGE' });
     window.scrollTo({
       top: 0,
@@ -203,25 +171,6 @@ export default function ProductsDashboardPage() {
 
   const handleDelete = useCallback(async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
-=======
-    });
-
-    setImageFile(null);
-    setImagePreview(product.image || "");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this product?"
-    );
-
-    if (!confirmDelete) return;
->>>>>>> origin/Nader
 
     try {
       const controller = new AbortController();
@@ -233,7 +182,7 @@ export default function ProductsDashboardPage() {
       const data = await res.json();
 
       if (!data.success) {
-        setNotification({ type: 'error', message: data.message || "Delete failed" });
+        showNotification('error', data.message || "Delete failed");
         return;
       }
 
@@ -241,18 +190,24 @@ export default function ProductsDashboardPage() {
         resetForm();
       }
 
-      refetch();
-      setNotification({ type: 'success', message: 'Product deleted' });
+      await refetch();
+      showNotification('success', 'Product deleted');
     } catch (error) {
       if (error.name !== 'AbortError') {
         console.error("Delete error:", error);
-        setNotification({ type: 'error', message: "Something went wrong" });
+        showNotification('error', "Something went wrong");
       }
     }
-  }, [editingId, refetch, resetForm]);
+  }, [editingId, refetch, resetForm, showNotification]);
 
   return (
     <div className={styles.wrapper}>
+      {notification && (
+        <div className={`${styles.notification} ${styles[notification.type]}`}>
+          {notification.message}
+        </div>
+      )}
+
       <div className={styles.topBar}>
         <div>
           <p className={styles.eyebrow}>Dashboard</p>
@@ -287,6 +242,7 @@ export default function ProductsDashboardPage() {
                 placeholder="Enter product name"
                 value={formState.name}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -298,12 +254,13 @@ export default function ProductsDashboardPage() {
                 placeholder="Enter price"
                 value={formState.price}
                 onChange={handleChange}
+                step="0.01"
+                required
               />
             </div>
 
             <div className={styles.field}>
               <label>Product Image</label>
-
               <input
                 ref={fileInputRef}
                 type="file"
@@ -320,28 +277,10 @@ export default function ProductsDashboardPage() {
                 Choose Image From Device
               </button>
 
-<<<<<<< HEAD
-  {formState.imagePreview && (
-    <div style={{ marginTop: "12px" }}>
-      <img
-        src={formState.imagePreview}
-        alt="Preview"
-        style={{
-          width: "140px",
-          height: "140px",
-          objectFit: "cover",
-          borderRadius: "14px",
-          border: "1px solid rgba(255,255,255,0.1)",
-        }}
-      />
-    </div>
-  )}
-</div>
-=======
-              {(imagePreview || formData.image) && (
+              {(formState.imagePreview || formState.image) && (
                 <div style={{ marginTop: "12px" }}>
                   <img
-                    src={imagePreview || formData.image}
+                    src={formState.imagePreview || formState.image}
                     alt="Preview"
                     style={{
                       width: "140px",
@@ -354,7 +293,6 @@ export default function ProductsDashboardPage() {
                 </div>
               )}
             </div>
->>>>>>> origin/Nader
 
             <div className={styles.field}>
               <label>Description</label>
@@ -367,7 +305,11 @@ export default function ProductsDashboardPage() {
               />
             </div>
 
-            <button type="submit" disabled={loading} className={`${styles.mainButton} btn-primary`}>
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className={`${styles.mainButton} btn-primary`}
+            >
               {loading
                 ? isEditing
                   ? "Saving..."
@@ -419,10 +361,6 @@ export default function ProductsDashboardPage() {
 
                     <p className={styles.description}>
                       {product.description || "No description available."}
-                    </p>
-
-                    <p className={styles.pathText}>
-                      <strong>Image:</strong> {product.image || "Not provided"}
                     </p>
 
                     <div className={styles.actions}>
