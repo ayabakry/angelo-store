@@ -78,11 +78,10 @@ const Products = () => {
               <button
                 key={category}
                 onClick={() => handleCategoryChange(category)}
-                className={`category-btn px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 ${
-                  activeCategory === category
+                className={`category-btn px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider transition-all duration-300 ${activeCategory === category
                     ? "active bg-brand-red text-white"
                     : "bg-white/10 text-white hover:bg-white/20"
-                }`}
+                  }`}
               >
                 {category}
               </button>

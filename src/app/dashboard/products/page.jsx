@@ -54,32 +54,32 @@ export default function ProductsDashboardPage() {
       ...prev,
       [name]: value,
     }));
-    
+
   };
 
   const handleImageSelect = (e) => {
-  const file = e.target.files?.[0];
+    const file = e.target.files?.[0];
 
-  if (!file) {
+    if (!file) {
+      setImageFile(null);
+      setImagePreview("");
+      return;
+    }
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const resetForm = () => {
+    setFormData(initialForm);
+    setEditingId(null);
     setImageFile(null);
     setImagePreview("");
-    return;
-  }
 
-  setImageFile(file);
-  setImagePreview(URL.createObjectURL(file));
-};
-
-const resetForm = () => {
-  setFormData(initialForm);
-  setEditingId(null);
-  setImageFile(null);
-  setImagePreview("");
-
-  if (fileInputRef.current) {
-    fileInputRef.current.value = "";
-  }
-};
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,6 +90,27 @@ const resetForm = () => {
     setLoading(true);
 
     try {
+      let imagePath = formData.image || "";
+
+      if (imageFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append("file", imageFile);
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadFormData,
+        });
+
+        const uploadData = await uploadRes.json();
+
+        if (!uploadData.success) {
+          alert(uploadData.message || "Image upload failed");
+          return;
+        }
+
+        imagePath = uploadData.filePath;
+      }
+
       const url = isEditing ? `/api/products/${editingId}` : "/api/products";
       const method = isEditing ? "PUT" : "POST";
 
@@ -101,7 +122,7 @@ const resetForm = () => {
         body: JSON.stringify({
           name: formData.name.trim(),
           price: Number(formData.price),
-          image: formData.image.trim(),
+          image: imagePath,
           description: formData.description.trim(),
         }),
       });
@@ -124,22 +145,22 @@ const resetForm = () => {
   };
 
   const handleEdit = (product) => {
-  setEditingId(product._id);
-  setFormData({
-    name: product.name || "",
-    price: product.price || "",
-    image: product.image || "",
-    description: product.description || "",
-  });
+    setEditingId(product._id);
+    setFormData({
+      name: product.name || "",
+      price: product.price || "",
+      image: product.image || "",
+      description: product.description || "",
+    });
 
-  setImageFile(null);
-  setImagePreview(product.image || "");
+    setImageFile(null);
+    setImagePreview(product.image || "");
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-};
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -222,40 +243,40 @@ const resetForm = () => {
             </div>
 
             <div className={styles.field}>
-  <label>Product Image</label>
+              <label>Product Image</label>
 
-  <input
-    ref={fileInputRef}
-    type="file"
-    accept="image/*"
-    onChange={handleImageSelect}
-    style={{ display: "none" }}
-  />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                style={{ display: "none" }}
+              />
 
-  <button
-    type="button"
-    className={styles.secondaryButton}
-    onClick={() => fileInputRef.current?.click()}
-  >
-    Choose Image From Device
-  </button>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Choose Image From Device
+              </button>
 
-  {(imagePreview || formData.image) && (
-    <div style={{ marginTop: "12px" }}>
-      <img
-        src={imagePreview || formData.image}
-        alt="Preview"
-        style={{
-          width: "140px",
-          height: "140px",
-          objectFit: "cover",
-          borderRadius: "14px",
-          border: "1px solid rgba(255,255,255,0.1)",
-        }}
-      />
-    </div>
-  )}
-</div>
+              {(imagePreview || formData.image) && (
+                <div style={{ marginTop: "12px" }}>
+                  <img
+                    src={imagePreview || formData.image}
+                    alt="Preview"
+                    style={{
+                      width: "140px",
+                      height: "140px",
+                      objectFit: "cover",
+                      borderRadius: "14px",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
 
             <div className={styles.field}>
               <label>Description</label>
@@ -274,8 +295,8 @@ const resetForm = () => {
                   ? "Saving..."
                   : "Adding..."
                 : isEditing
-                ? "Save Changes"
-                : "Add Product"}
+                  ? "Save Changes"
+                  : "Add Product"}
             </button>
           </form>
         </div>
