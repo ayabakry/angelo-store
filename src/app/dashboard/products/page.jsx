@@ -48,6 +48,7 @@ export default function ProductsDashboardPage() {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
+<<<<<<< HEAD
     dispatch({ type: 'SET_FIELD', field: name, value });
   }, []);
 
@@ -70,6 +71,40 @@ export default function ProductsDashboardPage() {
   }, []);
 
   const handleSubmit = useCallback(async (e) => {
+=======
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+  };
+
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) {
+      setImageFile(null);
+      setImagePreview("");
+      return;
+    }
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const resetForm = () => {
+    setFormData(initialForm);
+    setEditingId(null);
+    setImageFile(null);
+    setImagePreview("");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmit = async (e) => {
+>>>>>>> origin/Nader
     e.preventDefault();
 
     if (!formState.name.trim()) return setNotification({ type: 'error', message: "Please enter product name" });
@@ -78,6 +113,27 @@ export default function ProductsDashboardPage() {
     setLoading(true);
 
     try {
+      let imagePath = formData.image || "";
+
+      if (imageFile) {
+        const uploadFormData = new FormData();
+        uploadFormData.append("file", imageFile);
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadFormData,
+        });
+
+        const uploadData = await uploadRes.json();
+
+        if (!uploadData.success) {
+          alert(uploadData.message || "Image upload failed");
+          return;
+        }
+
+        imagePath = uploadData.filePath;
+      }
+
       const url = isEditing ? `/api/products/${editingId}` : "/api/products";
       const method = isEditing ? "PUT" : "POST";
 
@@ -89,10 +145,17 @@ export default function ProductsDashboardPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+<<<<<<< HEAD
           name: formState.name.trim(),
           price: Number(formState.price),
           image: formState.image.trim(),
           description: formState.description.trim(),
+=======
+          name: formData.name.trim(),
+          price: Number(formData.price),
+          image: imagePath,
+          description: formData.description.trim(),
+>>>>>>> origin/Nader
         }),
       });
 
@@ -116,13 +179,20 @@ export default function ProductsDashboardPage() {
     }
   }, [formState, isEditing, editingId, refetch, resetForm]);
 
+<<<<<<< HEAD
   const handleEdit = useCallback((product) => {
     setEditingId(product._id);
     dispatch({ type: 'SET_FORM', payload: {
+=======
+  const handleEdit = (product) => {
+    setEditingId(product._id);
+    setFormData({
+>>>>>>> origin/Nader
       name: product.name || "",
       price: product.price || "",
       image: product.image || "",
       description: product.description || "",
+<<<<<<< HEAD
     }});
     dispatch({ type: 'CLEAR_IMAGE' });
     window.scrollTo({
@@ -133,6 +203,25 @@ export default function ProductsDashboardPage() {
 
   const handleDelete = useCallback(async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
+=======
+    });
+
+    setImageFile(null);
+    setImagePreview(product.image || "");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+
+    if (!confirmDelete) return;
+>>>>>>> origin/Nader
 
     try {
       const controller = new AbortController();
@@ -213,24 +302,25 @@ export default function ProductsDashboardPage() {
             </div>
 
             <div className={styles.field}>
-  <label>Product Image</label>
+              <label>Product Image</label>
 
-  <input
-    ref={fileInputRef}
-    type="file"
-    accept="image/*"
-    onChange={handleImageSelect}
-    style={{ display: "none" }}
-  />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                style={{ display: "none" }}
+              />
 
-  <button
-    type="button"
-    className={styles.secondaryButton}
-    onClick={() => fileInputRef.current?.click()}
-  >
-    Choose Image From Device
-  </button>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Choose Image From Device
+              </button>
 
+<<<<<<< HEAD
   {formState.imagePreview && (
     <div style={{ marginTop: "12px" }}>
       <img
@@ -247,6 +337,24 @@ export default function ProductsDashboardPage() {
     </div>
   )}
 </div>
+=======
+              {(imagePreview || formData.image) && (
+                <div style={{ marginTop: "12px" }}>
+                  <img
+                    src={imagePreview || formData.image}
+                    alt="Preview"
+                    style={{
+                      width: "140px",
+                      height: "140px",
+                      objectFit: "cover",
+                      borderRadius: "14px",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+>>>>>>> origin/Nader
 
             <div className={styles.field}>
               <label>Description</label>
@@ -265,8 +373,8 @@ export default function ProductsDashboardPage() {
                   ? "Saving..."
                   : "Adding..."
                 : isEditing
-                ? "Save Changes"
-                : "Add Product"}
+                  ? "Save Changes"
+                  : "Add Product"}
             </button>
           </form>
         </div>

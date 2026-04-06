@@ -22,8 +22,19 @@ const ProductDetailsModal = ({ product, onClose }) => {
 
   const images =
     Array.isArray(product.images) && product.images.length > 0
-      ? product.images
-      : product.image
+      ? product.images.filter(
+        (img) =>
+          typeof img === "string" &&
+          img.trim() !== "" &&
+          (img.startsWith("/") ||
+            img.startsWith("http://") ||
+            img.startsWith("https://"))
+      )
+      : typeof product.image === "string" &&
+        product.image.trim() !== "" &&
+        (product.image.startsWith("/") ||
+          product.image.startsWith("http://") ||
+          product.image.startsWith("https://"))
         ? [product.image]
         : [];
 
@@ -51,15 +62,13 @@ const ProductDetailsModal = ({ product, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${isVisible ? "opacity-100" : "opacity-0"
+        }`}
       onClick={handleBackdropClick}
     >
       <div
-        className={`bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative transform transition-all duration-500 ${
-          isVisible ? "scale-100 translate-y-0" : "scale-90 translate-y-10"
-        }`}
+        className={`bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative transform transition-all duration-500 ${isVisible ? "scale-100 translate-y-0" : "scale-90 translate-y-10"
+          }`}
       >
         {/* Close Button */}
         <button
@@ -77,14 +86,19 @@ const ProductDetailsModal = ({ product, onClose }) => {
           <div className="lg:w-1/2 p-4 relative">
             {/* Main Image */}
             <div className="relative h-64 sm:h-80 lg:h-96 mb-4">
-              <Image
-                src={images[selectedImage]}
-                alt={product.name}
-                fill
-                className="object-contain rounded-xl"
-              />
+              {images.length > 0 ? (
+                <Image
+                  src={img}
+                  alt={product.name}
+                  fill
+                  className="object-contain rounded-xl"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center rounded-xl bg-white/5 text-white/50">
+                  No Image
+                </div>
+              )}
 
-              {/* Arrows */}
               {images.length > 1 && (
                 <>
                   <button
@@ -110,11 +124,10 @@ const ProductDetailsModal = ({ product, onClose }) => {
                   <div
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`relative w-16 h-16 sm:w-20 sm:h-20 cursor-pointer rounded-lg overflow-hidden border-2 transition ${
-                      selectedImage === index
-                        ? "border-brand-red"
-                        : "border-transparent opacity-70 hover:opacity-100"
-                    }`}
+                    className={`relative w-16 h-16 sm:w-20 sm:h-20 cursor-pointer rounded-lg overflow-hidden border-2 transition ${selectedImage === index
+                      ? "border-brand-red"
+                      : "border-transparent opacity-70 hover:opacity-100"
+                      }`}
                   >
                     <Image
                       src={img}
