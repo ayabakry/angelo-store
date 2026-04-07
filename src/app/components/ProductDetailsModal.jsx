@@ -53,13 +53,16 @@ const ProductDetailsModal = ({ product, onClose }) => {
     setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
-  const whatsappMessage = React.useMemo(
-    () =>
-      encodeURIComponent(
-        `I'm interested in ${product.name} - Price: ${product.price} EGP`,
-      ),
-    [product.name, product.price],
-  );
+  const whatsappMessage = React.useMemo(() => {
+    const discounted =
+      product.discountPercentage > 0
+        ? (product.price * (1 - product.discountPercentage / 100)).toFixed(2) +
+          " EGP"
+        : `${product.price} EGP`;
+    return encodeURIComponent(
+      `I'm interested in ${product.name} - Price: ${discounted}`,
+    );
+  }, [product.name, product.price, product.discountPercentage]);
 
   return (
     <div
@@ -161,23 +164,26 @@ const ProductDetailsModal = ({ product, onClose }) => {
 
             {/* Price */}
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-2xl sm:text-3xl font-bold text-brand-red">
-                {product.price} EGP
-              </span>
-
-              {product.originalPrice && (
+              {product.discountPercentage > 0 ? (
                 <>
-                  <span className="text-gray-500 line-through">
-                    {product.originalPrice} EGP
+                  <span className="text-2xl sm:text-3xl font-bold text-brand-red line-through opacity-75">
+                    {product.price} EGP
                   </span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-400 text-sm rounded">
-                    Save{" "}
-                    {Math.round(
-                      (1 - product.price / product.originalPrice) * 100,
-                    )}
-                    %
+                  <span className="text-2xl sm:text-3xl font-bold text-green-500">
+                    {(
+                      product.price *
+                      (1 - product.discountPercentage / 100)
+                    ).toFixed(2)}{" "}
+                    EGP
+                  </span>
+                  <span className="px-3 py-1.5 bg-brand-red/20 text-brand-red font-semibold text-sm rounded-lg border border-brand-red/30">
+                    Save {product.discountPercentage}%
                   </span>
                 </>
+              ) : (
+                <span className="text-2xl sm:text-3xl font-bold text-brand-red">
+                  {product.price} EGP
+                </span>
               )}
             </div>
 

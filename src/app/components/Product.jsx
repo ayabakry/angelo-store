@@ -4,10 +4,15 @@ import Image from "next/image";
 import React, { useMemo } from "react";
 
 const Product = React.memo(({ product, onClick }) => {
-  const whatsappMessage = useMemo(
-    () => encodeURIComponent(`I'm interested in ${product.name}`),
-    [product.name],
-  );
+  const whatsappMessage = useMemo(() => {
+    const discountedPrice =
+      product.discountPercentage > 0
+        ? (product.price * (1 - product.discountPercentage / 100)).toFixed(2)
+        : product.price;
+    return encodeURIComponent(
+      `I'm interested in ${product.name} - Price: ${discountedPrice} EGP`,
+    );
+  }, [product.name, product.price, product.discountPercentage]);
 
   const hasValidImage =
     typeof product.image === "string" &&
@@ -54,19 +59,34 @@ const Product = React.memo(({ product, onClick }) => {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-white mb-2 font-almarai">
+      <h3 className="text-lg md:text-xl font-bold text-white mb-3 font-almarai leading-tight tracking-tight">
         {product.name}
       </h3>
 
       <div className="flex items-center justify-center gap-2 mb-3">
-        {product.originalPrice && (
-          <span className="text-sm text-brand-red line-through">
-            {product.originalPrice} EGP
-          </span>
+        {product.discountPercentage > 0 ? (
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-brand-red line-through font-medium">
+                {product.price} EGP
+              </span>
+              <span className="text-lg font-bold text-green-500 font-almarai">
+                {(
+                  product.price *
+                  (1 - product.discountPercentage / 100)
+                ).toFixed(2)}{" "}
+                EGP
+              </span>
+            </div>
+            <span className="bg-brand-red text-white text-xs px-2 py-1 rounded-full font-medium uppercase tracking-wide">
+              Save {product.discountPercentage}%
+            </span>
+          </div>
+        ) : (
+          <div className="text-xl font-bold text-blue-600 font-almarai">
+            {product.price} EGP
+          </div>
         )}
-        <div className="text-xl font-bold text-blue-600 font-almarai">
-          {product.price} EGP
-        </div>
       </div>
 
       <a

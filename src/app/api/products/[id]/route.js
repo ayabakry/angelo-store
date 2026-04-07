@@ -46,6 +46,7 @@ export async function PUT(request, { params }) {
         price: Number(body.price),
         image: body.image || "",
         description: body.description || "",
+        discountPercentage: body.discountPercentage || 0,
       },
       { new: true, runValidators: true }
     );

@@ -34,6 +34,7 @@ export async function POST(request) {
       price: Number(body.price),
       image: body.image || "",
       description: body.description || "",
+      discountPercentage: body.discountPercentage || 0,
     });
 
     return NextResponse.json(

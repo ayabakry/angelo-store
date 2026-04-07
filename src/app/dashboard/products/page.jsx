@@ -9,19 +9,20 @@ const initialForm = {
   price: "",
   image: "",
   description: "",
+  discountPercentage: "",
 };
 
 const formReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_FIELD':
+    case "SET_FIELD":
       return { ...state, [action.field]: action.value };
-    case 'SET_FORM':
+    case "SET_FORM":
       return action.payload;
-    case 'RESET':
+    case "RESET":
       return initialForm;
-    case 'SET_IMAGE_FILE':
+    case "SET_IMAGE_FILE":
       return { ...state, imageFile: action.file, imagePreview: action.preview };
-    case 'CLEAR_IMAGE':
+    case "CLEAR_IMAGE":
       return { ...state, imageFile: null, imagePreview: "" };
     default:
       return state;
@@ -54,151 +55,171 @@ export default function ProductsDashboardPage() {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    dispatch({ type: 'SET_FIELD', field: name, value });
+    dispatch({ type: "SET_FIELD", field: name, value });
   }, []);
 
   const handleImageSelect = useCallback((e) => {
     const file = e.target.files?.[0];
     if (!file) {
-      dispatch({ type: 'CLEAR_IMAGE' });
+      dispatch({ type: "CLEAR_IMAGE" });
       return;
     }
     const preview = URL.createObjectURL(file);
-    dispatch({ type: 'SET_IMAGE_FILE', file, preview });
+    dispatch({ type: "SET_IMAGE_FILE", file, preview });
   }, []);
 
   const resetForm = useCallback(() => {
-    dispatch({ type: 'RESET' });
+    dispatch({ type: "RESET" });
     setEditingId(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
   }, []);
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (!formState.name?.trim()) {
-      showNotification('error', "Please enter product name");
-      return;
-    }
-    if (!formState.price) {
-      showNotification('error', "Please enter product price");
-      return;
-    }
+      if (!formState.name?.trim()) {
+        showNotification("error", "Please enter product name");
+        return;
+      }
+      if (!formState.price) {
+        showNotification("error", "Please enter product price");
+        return;
+      }
+      const discount = Number(formState.discountPercentage || 0);
+      if (discount < 0 || discount > 100) {
+        showNotification("error", "Discount must be between 0 and 100");
+        return;
+      }
 
-    setLoading(true);
+      setLoading(true);
 
-    try {
-      let imagePath = formState.image || "";
+      try {
+        let imagePath = formState.image || "";
 
-      if (formState.imageFile) {
-        const uploadFormData = new FormData();
-        uploadFormData.append("file", formState.imageFile);
+        if (formState.imageFile) {
+          const uploadFormData = new FormData();
+          uploadFormData.append("file", formState.imageFile);
 
-        const uploadRes = await fetch("/api/upload", {
-          method: "POST",
-          body: uploadFormData,
+          const uploadRes = await fetch("/api/upload", {
+            method: "POST",
+            body: uploadFormData,
+          });
+
+          const uploadData = await uploadRes.json();
+
+          if (!uploadData.success) {
+            showNotification(
+              "error",
+              uploadData.message || "Image upload failed",
+            );
+            setLoading(false);
+            return;
+          }
+
+          imagePath = uploadData.filePath;
+        }
+
+        const url = isEditing ? `/api/products/${editingId}` : "/api/products";
+        const method = isEditing ? "PUT" : "POST";
+
+        const controller = new AbortController();
+        const res = await fetch(url, {
+          method,
+          signal: controller.signal,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formState.name.trim(),
+            price: Number(formState.price),
+            image: imagePath,
+            description: formState.description?.trim() || "",
+            discountPercentage: Number(formState.discountPercentage || 0),
+          }),
         });
 
-        const uploadData = await uploadRes.json();
+        const data = await res.json();
 
-        if (!uploadData.success) {
-          showNotification('error', uploadData.message || "Image upload failed");
+        if (!data.success) {
+          showNotification("error", data.message || "Something went wrong");
           setLoading(false);
           return;
         }
 
-        imagePath = uploadData.filePath;
-      }
-
-      const url = isEditing ? `/api/products/${editingId}` : "/api/products";
-      const method = isEditing ? "PUT" : "POST";
-
-      const controller = new AbortController();
-      const res = await fetch(url, {
-        method,
-        signal: controller.signal,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formState.name.trim(),
-          price: Number(formState.price),
-          image: imagePath,
-          description: formState.description?.trim() || "",
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        showNotification('error', data.message || "Something went wrong");
+        await refetch();
+        resetForm();
+        showNotification(
+          "success",
+          isEditing ? "Product updated" : "Product added",
+        );
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Submit error:", error);
+          showNotification("error", "Something went wrong");
+        }
+      } finally {
         setLoading(false);
-        return;
       }
-
-      await refetch();
-      resetForm();
-      showNotification('success', isEditing ? 'Product updated' : 'Product added');
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error("Submit error:", error);
-        showNotification('error', "Something went wrong");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [formState, isEditing, editingId, refetch, resetForm, showNotification]);
+    },
+    [formState, isEditing, editingId, refetch, resetForm, showNotification],
+  );
 
   const handleEdit = useCallback((product) => {
     setEditingId(product._id);
-    dispatch({ 
-      type: 'SET_FORM', 
+    dispatch({
+      type: "SET_FORM",
       payload: {
         name: product.name || "",
         price: product.price || "",
         image: product.image || "",
         description: product.description || "",
-      }
+        discountPercentage: product.discountPercentage || "",
+      },
     });
-    dispatch({ type: 'CLEAR_IMAGE' });
+    dispatch({ type: "CLEAR_IMAGE" });
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }, []);
 
-  const handleDelete = useCallback(async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-    try {
-      const controller = new AbortController();
-      const res = await fetch(`/api/products/${id}`, {
-        method: "DELETE",
-        signal: controller.signal,
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        showNotification('error', data.message || "Delete failed");
+  const handleDelete = useCallback(
+    async (id) => {
+      if (!window.confirm("Are you sure you want to delete this product?"))
         return;
-      }
 
-      if (editingId === id) {
-        resetForm();
-      }
+      try {
+        const controller = new AbortController();
+        const res = await fetch(`/api/products/${id}`, {
+          method: "DELETE",
+          signal: controller.signal,
+        });
 
-      await refetch();
-      showNotification('success', 'Product deleted');
-    } catch (error) {
-      if (error.name !== 'AbortError') {
-        console.error("Delete error:", error);
-        showNotification('error', "Something went wrong");
+        const data = await res.json();
+
+        if (!data.success) {
+          showNotification("error", data.message || "Delete failed");
+          return;
+        }
+
+        if (editingId === id) {
+          resetForm();
+        }
+
+        await refetch();
+        showNotification("success", "Product deleted");
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error("Delete error:", error);
+          showNotification("error", "Something went wrong");
+        }
       }
-    }
-  }, [editingId, refetch, resetForm, showNotification]);
+    },
+    [editingId, refetch, resetForm, showNotification],
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -260,6 +281,20 @@ export default function ProductsDashboardPage() {
             </div>
 
             <div className={styles.field}>
+              <label>Discount (%)</label>
+              <input
+                type="number"
+                name="discountPercentage"
+                placeholder="0"
+                value={formState.discountPercentage}
+                onChange={handleChange}
+                min="0"
+                max="100"
+                step="1"
+              />
+            </div>
+
+            <div className={styles.field}>
               <label>Product Image</label>
               <input
                 ref={fileInputRef}
@@ -305,9 +340,9 @@ export default function ProductsDashboardPage() {
               />
             </div>
 
-            <button 
-              type="submit" 
-              disabled={loading} 
+            <button
+              type="submit"
+              disabled={loading}
               className={`${styles.mainButton} btn-primary`}
             >
               {loading
@@ -340,7 +375,10 @@ export default function ProductsDashboardPage() {
           ) : (
             <div className={styles.productsGrid}>
               {filteredProducts.map((product) => (
-                <div key={product._id} className={`${styles.productCard} product-card`}>
+                <div
+                  key={product._id}
+                  className={`${styles.productCard} product-card`}
+                >
                   <div className={styles.imageBox}>
                     {product.image ? (
                       <img
@@ -356,7 +394,43 @@ export default function ProductsDashboardPage() {
                   <div className={styles.productContent}>
                     <div className={styles.productHead}>
                       <h3>{product.name}</h3>
-                      <span className={styles.price}>${product.price}</span>
+                      {product.discountPercentage > 0 ? (
+                        <>
+                          <span
+                            className={styles.price}
+                            style={{
+                              textDecoration: "line-through",
+                              opacity: 0.6,
+                            }}
+                          >
+                            ${product.price}
+                          </span>
+                          <span
+                            className={styles.price}
+                            style={{ color: "#10b981", fontWeight: "bold" }}
+                          >
+                            $
+                            {(
+                              product.price *
+                              (1 - product.discountPercentage / 100)
+                            ).toFixed(2)}
+                          </span>
+                          <span
+                            style={{
+                              color: "#ef4444",
+                              fontSize: "0.8em",
+                              fontWeight: "bold",
+                              padding: "2px 6px",
+                              backgroundColor: "rgba(239,68,68,0.1)",
+                              borderRadius: "4px",
+                            }}
+                          >
+                            -{product.discountPercentage}%
+                          </span>
+                        </>
+                      ) : (
+                        <span className={styles.price}>${product.price}</span>
+                      )}
                     </div>
 
                     <p className={styles.description}>
