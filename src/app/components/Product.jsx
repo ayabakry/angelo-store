@@ -3,15 +3,11 @@
 import Image from "next/image";
 import React, { useMemo } from "react";
 
-
 const Product = React.memo(({ product, onClick }) => {
   const whatsappMessage = useMemo(
     () => encodeURIComponent(`I'm interested in ${product.name}`),
-    [product.name]
+    [product.name],
   );
-
-
- 
 
   const hasValidImage =
     typeof product.image === "string" &&
@@ -46,7 +42,7 @@ const Product = React.memo(({ product, onClick }) => {
         )}
 
         <div className="product-overlay rounded-lg">
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               onClick(product);
@@ -78,7 +74,7 @@ const Product = React.memo(({ product, onClick }) => {
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="inline-block bg-brand-blue hover:bg-brand-red text-white font-semibold font-almarai py-2 px-4 rounded-lg transition-all duration-300 w-full"
+        className="inline-block bg-brand-blue hover:bg-whatsapp-green text-white font-semibold font-almarai py-2 px-4 rounded-lg transition-all duration-300 w-full"
       >
         Buy on WhatsApp
       </a>
