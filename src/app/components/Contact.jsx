@@ -7,8 +7,8 @@ const ContactUs = () => {
   const [sectionRef, isVisible] = useScrollReveal({ threshold: 0.2 });
 
   return (
-    <section 
-      id="contact" 
+    <section
+      id="contact"
       className="py-20 px-4 relative overflow-hidden"
       ref={sectionRef}
     >
@@ -29,10 +29,10 @@ const ContactUs = () => {
               <i className="fas fa-phone text-brand-blue"></i>
             </span>
             <a
-              href="tel:+201020881988"
+              href="tel:+201017738775"
               className="text-white hover:text-brand-blue transition-colors"
             >
-              +201020881988
+              +201017738775
             </a>
           </p>
 
@@ -41,7 +41,7 @@ const ContactUs = () => {
               <i className="fab fa-whatsapp text-green-500"></i>
             </span>
             <a
-              href="https://wa.me/201020881988"
+              href="https://wa.me/201017738775"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white hover:text-green-500 transition-colors"
@@ -71,11 +71,11 @@ const ContactUs = () => {
               <i className="fab fa-instagram text-xl group-hover:text-white"></i>
             </a>
 
-           
+
           </div>
         </div>
 
-       
+
       </div>
     </section>
   );
