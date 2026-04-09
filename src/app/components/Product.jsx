@@ -63,14 +63,14 @@ const Product = React.memo(({ product, onClick }) => {
         {product.name}
       </h3>
 
-      <div className="flex items-center justify-center gap-2 mb-3">
+      <div className="flex items-center justify-center h-14 mb-3">
         {product.discountPercentage > 0 ? (
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 h-full justify-center">
             <div className="flex items-center gap-2">
               <span className="text-sm text-brand-red line-through font-medium">
                 {product.price} EGP
               </span>
-              <span className="text-lg font-bold text-green-500 font-almarai">
+              <span className="text-lg font-bold text-blue-600 font-almarai">
                 {(
                   product.price *
                   (1 - product.discountPercentage / 100)
