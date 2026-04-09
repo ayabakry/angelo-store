@@ -90,7 +90,7 @@ const Product = React.memo(({ product, onClick }) => {
       </div>
 
       <a
-        href={`https://wa.me/201020881988?text=${whatsappMessage}`}
+        href={`https://wa.me/201017738775?text=${whatsappMessage}`}
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}

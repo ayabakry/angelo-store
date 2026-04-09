@@ -200,7 +200,7 @@ const ProductDetailsModal = ({ product, onClose }) => {
             {/* Actions */}
             <div className="space-y-3">
               <a
-                href={`https://wa.me/201020881988?text=${whatsappMessage}`}
+                href={`https://wa.me/201017738775?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-brand-blue hover:bg-whatsapp-green text-white font-semibold py-3 px-6 rounded-xl transition"
