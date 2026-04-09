@@ -76,7 +76,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
           isVisible ? "scale-100 translate-y-0" : "scale-90 translate-y-10"
         }`}
       >
-        {/* Close Button */}
         <button
           onClick={() => {
             setIsVisible(false);
@@ -90,7 +89,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
         <div className="flex flex-col lg:flex-row">
           {/* ✅ IMAGE GALLERY */}
           <div className="lg:w-1/2 p-4 relative">
-            {/* Main Image */}
             <div className="relative h-64 sm:h-80 lg:h-96 mb-4">
               {images.length > 0 ? (
                 <Image
@@ -148,7 +146,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
             )}
           </div>
 
-          {/* ✅ DETAILS */}
           <div className="lg:w-1/2 p-4 sm:p-6 md:p-8 text-white">
             <div className="inline-block px-3 py-1 bg-white/10 rounded-full text-xs uppercase tracking-wider mb-4">
               {product.category}
@@ -162,23 +159,26 @@ const ProductDetailsModal = ({ product, onClose }) => {
               {product.description}
             </p>
 
-            {/* Price */}
             <div className="flex items-center gap-4 mb-6">
               {product.discountPercentage > 0 ? (
                 <>
-                  <span className="text-2xl sm:text-3xl font-bold text-brand-red line-through opacity-75">
-                    {product.price} EGP
-                  </span>
-                  <span className="text-2xl sm:text-3xl font-bold text-green-500">
+                  <span className="text-2xl sm:text-3xl font-bold text-blue-600">
                     {(
                       product.price *
                       (1 - product.discountPercentage / 100)
                     ).toFixed(2)}{" "}
                     EGP
                   </span>
-                  <span className="px-3 py-1.5 bg-brand-red/20 text-brand-red font-semibold text-sm rounded-lg border border-brand-red/30">
-                    Save {product.discountPercentage}%
+                  <span className="text-2xl sm:text-xl font-bold text-brand-red line-through opacity-75">
+                    {product.price} EGP
                   </span>
+                  <span className="text-red-500 text-[0.8em] font-bold px-[6px] py-[2px] bg-red-500/10 rounded">
+                    -{product.discountPercentage}%
+                  </span>
+
+                  {/* <span className="px-3 py-1.5 bg-brand-red/20 text-brand-red font-semibold text-sm rounded-lg border border-brand-red/30">
+                    Save {product.discountPercentage}%
+                  </span> */}
                 </>
               ) : (
                 <span className="text-2xl sm:text-3xl font-bold text-brand-red">
