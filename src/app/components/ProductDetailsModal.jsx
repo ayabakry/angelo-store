@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 const ProductDetailsModal = ({ product, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,7 +10,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
   useEffect(() => {
     if (!product) return;
 
-    // Reset selected image and lock scroll when modal opens
     setSelectedImage(0);
     document.body.style.overflow = "hidden";
     setIsVisible(false);
@@ -58,17 +57,23 @@ const ProductDetailsModal = ({ product, onClose }) => {
     setSelectedImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
-  const whatsappMessage = React.useMemo(() => {
-    const discounted =
+  const whatsappMessage = useMemo(() => {
+    const discountedPrice =
       product.discountPercentage > 0
-        ? (product.price * (1 - product.discountPercentage / 100)).toFixed(2) +
-          " EGP"
-        : `${product.price} EGP`;
+        ? (product.price * (1 - product.discountPercentage / 100)).toFixed(2)
+        : product.price;
 
-    const productLink = `${process.env.NEXT_PUBLIC_SITE_URL || ""}/?product=${product._id || ""}`;
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "");
+
+    const productLink = `${baseUrl}/?product=${product._id || ""}`;
 
     return encodeURIComponent(
-      `I'm interested in ${product.name} - Price: ${discounted}\nLink: ${productLink}`,
+      `Hi! I'm interested in buying:\n\n` +
+      ` *${product.name}*\n` +
+      ` Price: *${discountedPrice} EGP*\n` +
+      ` ${productLink}`
     );
   }, [product.name, product.price, product.discountPercentage, product._id]);
 
@@ -95,7 +100,7 @@ const ProductDetailsModal = ({ product, onClose }) => {
         </button>
 
         <div className="flex flex-col lg:flex-row">
-          {/* ✅ IMAGE GALLERY */}
+          {/* IMAGE GALLERY */}
           <div className="lg:w-1/2 p-4 relative">
             <div className="relative h-64 sm:h-80 lg:h-96 mb-4">
               {images.length > 0 ? (
@@ -142,10 +147,10 @@ const ProductDetailsModal = ({ product, onClose }) => {
                     }`}
                   >
                     <Image
-                      src={images[selectedImage]}
-                      alt={product.name}
+                      src={img}
+                      alt={`${product.name} ${index + 1}`}
                       fill
-                      className="object-contain rounded-xl"
+                      className="object-contain"
                     />
                   </div>
                 ))}
@@ -153,6 +158,7 @@ const ProductDetailsModal = ({ product, onClose }) => {
             )}
           </div>
 
+          {/* PRODUCT DETAILS */}
           <div className="lg:w-1/2 p-4 sm:p-6 md:p-8 text-white">
             <div className="inline-block px-3 py-1 bg-white/10 rounded-full text-xs uppercase tracking-wider mb-4">
               {product.category}
@@ -182,10 +188,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
                   <span className="text-red-500 text-[0.8em] font-bold px-[6px] py-[2px] bg-red-500/10 rounded">
                     -{product.discountPercentage}%
                   </span>
-
-                  {/* <span className="px-3 py-1.5 bg-brand-red/20 text-brand-red font-semibold text-sm rounded-lg border border-brand-red/30">
-                    Save {product.discountPercentage}%
-                  </span> */}
                 </>
               ) : (
                 <span className="text-2xl sm:text-3xl font-bold text-brand-red">
