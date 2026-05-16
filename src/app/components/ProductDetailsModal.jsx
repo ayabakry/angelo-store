@@ -8,20 +8,24 @@ const ProductDetailsModal = ({ product, onClose }) => {
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
-    if (product) {
-      setSelectedImage(0);
-      document.body.style.overflow = "hidden";
-      setTimeout(() => setIsVisible(true), 10);
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }
+    if (!product) return;
+
+    // Reset selected image and lock scroll when modal opens
+    setSelectedImage(0);
+    document.body.style.overflow = "hidden";
+    setIsVisible(false);
+
+    const t = setTimeout(() => setIsVisible(true), 10);
+    return () => {
+      clearTimeout(t);
+      document.body.style.overflow = "";
+    };
   }, [product]);
 
   if (!product) return null;
 
-  const images =
-    Array.isArray(product.images) && product.images.length > 0
+  const images = useMemo(() => {
+    return Array.isArray(product.images) && product.images.length > 0
       ? product.images.filter(
           (img) =>
             typeof img === "string" &&
@@ -37,6 +41,7 @@ const ProductDetailsModal = ({ product, onClose }) => {
             product.image.startsWith("https://"))
         ? [product.image]
         : [];
+  }, [product.images, product.image]);
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -59,10 +64,13 @@ const ProductDetailsModal = ({ product, onClose }) => {
         ? (product.price * (1 - product.discountPercentage / 100)).toFixed(2) +
           " EGP"
         : `${product.price} EGP`;
+
+    const productLink = `${process.env.NEXT_PUBLIC_SITE_URL || ""}/?product=${product._id || ""}`;
+
     return encodeURIComponent(
-      `I'm interested in ${product.name} - Price: ${discounted}`,
+      `I'm interested in ${product.name} - Price: ${discounted}\nLink: ${productLink}`,
     );
-  }, [product.name, product.price, product.discountPercentage]);
+  }, [product.name, product.price, product.discountPercentage, product._id]);
 
   return (
     <div
@@ -121,7 +129,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
               )}
             </div>
 
-            {/* Thumbnails */}
             {images.length > 0 && (
               <div className="flex gap-2 overflow-x-auto">
                 {images.map((img, index) => (
@@ -187,7 +194,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
               )}
             </div>
 
-            {/* Rating */}
             <div className="flex items-center gap-2 mb-6">
               <div className="flex text-yellow-400">
                 {[...Array(5)].map((_, i) => (
@@ -197,7 +203,6 @@ const ProductDetailsModal = ({ product, onClose }) => {
               <span className="text-gray-400 text-sm">(4.8 out of 5)</span>
             </div>
 
-            {/* Actions */}
             <div className="space-y-3">
               <a
                 href={`https://wa.me/201017738775?text=${whatsappMessage}`}

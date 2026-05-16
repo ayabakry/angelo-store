@@ -3,16 +3,26 @@
 import Image from "next/image";
 import React, { useMemo } from "react";
 
-const Product = React.memo(({ product, onClick }) => {
+const Product = React.memo(function Product({ product, onClick }) {
   const whatsappMessage = useMemo(() => {
     const discountedPrice =
       product.discountPercentage > 0
         ? (product.price * (1 - product.discountPercentage / 100)).toFixed(2)
         : product.price;
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "");
+
+    const productLink = `${baseUrl}/?product=${product._id || ""}`;
+
     return encodeURIComponent(
-      `I'm interested in ${product.name} - Price: ${discountedPrice} EGP`,
+      `Hi! I'm interested in buying:\n\n` +
+      ` *${product.name}*\n` +
+      ` Price: *${discountedPrice} EGP*\n` +
+      ` ${productLink}`
     );
-  }, [product.name, product.price, product.discountPercentage]);
+  }, [product.name, product.price, product.discountPercentage, product._id]);
 
   const hasValidImage =
     typeof product.image === "string" &&
@@ -90,7 +100,7 @@ const Product = React.memo(({ product, onClick }) => {
       </div>
 
       <a
-        href={`https://wa.me/201017738775?text=${whatsappMessage}`}
+        href={`https://wa.me/201117110818?text=${whatsappMessage}`}
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
